@@ -1,0 +1,47 @@
+package cat.itacademy.barcelonactiva.gimeno.carlos.s05.t01.n01.controller;
+
+import java.util.List;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+
+import cat.itacademy.barcelonactiva.gimeno.carlos.s05.t01.n01.model.domain.Sucursal;
+import cat.itacademy.barcelonactiva.gimeno.carlos.s05.t01.n01.services.SucursalService;
+import jakarta.websocket.server.PathParam;
+import lombok.AllArgsConstructor;
+
+@Controller
+@AllArgsConstructor
+class SucursalController {
+	private final SucursalService sucursalService;
+	
+	@GetMapping(value = "/sucursal/getAll")
+	public String getAllSucursal() {
+		List<Sucursal> list = this.sucursalService.getAllSucursal();
+		return "getAll";
+	}
+	
+	@PostMapping(value="/sucursal/add")
+	public String createNewSucursal() {
+		return "getAll";
+	}
+	
+	@PutMapping(value="/sucursal/update")
+	public String updateSucursal() {
+		return "getAll";
+	}
+	
+	@GetMapping(value="/sucursal/getOne/{id}")
+	public String getOneSucursal(@PathParam(value = "id") Long idSucursal  ) {
+		return "getAll";
+	}
+	
+	@DeleteMapping(value="/sucursal/delete/{id}")
+	public String deleteOneSucursal(@PathParam(value = "id") Long idSucursal  ) {
+		return "getAll";
+	}
+	 
+}
