@@ -23,12 +23,25 @@
             <td th:text="${s.nombreSucursal}"></td>
             <td th:text="${s.paisSucursal}"></td>
             <td>
-              <div class="container">
-                <a th:href="@{/sucursal/getOne/}+${s.pk_SucursalID}">
-                  <button type="button" class="btn btn-success">View</button>
-                </a>
-                <button type="button" class="btn btn-primary">Edit</button>
-                <button type="button" class="btn btn-danger">Delete</button>
+              <div class="container row">
+                <div class="col-3">
+                  <a th:href="@{/sucursal/getOne/}+${s.pk_SucursalID}">
+                    <button type="button" class="btn btn-success">View</button>
+                  </a>
+                </div>
+                <div class="col-3">
+                  <a th:href="@{/sucursal/getOne/}+${s.pk_SucursalID}">
+                    <button type="button" class="btn btn-primary">Edit</button>
+                  </a>
+                </div>
+                <div class="col-3">
+                  <form
+                    th:action="@{/sucursal/delete/}+${s.pk_SucursalID}"
+                    th:method="delete"
+                  >
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                  </form>
+                </div>
               </div>
             </td>
           </tr>
