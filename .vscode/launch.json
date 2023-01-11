@@ -1,0 +1,14 @@
+{
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Spring Boot-S05T01N01GimenoCarlosApplication<S05T01N01GimenoCarlos>",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "mainClass": "cat.itacademy.barcelonactiva.gimeno.carlos.s05.t01.n01.S05T01N01GimenoCarlosApplication",
+      "projectName": "S05T01N01GimenoCarlos",
+      "args": "",
+      "envFile": "${workspaceFolder}/.env"
+    }
+  ]
+}

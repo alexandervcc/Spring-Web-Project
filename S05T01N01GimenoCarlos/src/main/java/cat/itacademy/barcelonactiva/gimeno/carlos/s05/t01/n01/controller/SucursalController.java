@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 
-import cat.itacademy.barcelonactiva.gimeno.carlos.s05.t01.n01.model.domain.Sucursal;
 import cat.itacademy.barcelonactiva.gimeno.carlos.s05.t01.n01.model.dto.SucursalDTO;
 import cat.itacademy.barcelonactiva.gimeno.carlos.s05.t01.n01.services.SucursalService;
 import lombok.AllArgsConstructor;
@@ -24,7 +23,7 @@ class SucursalController {
 
 	@GetMapping(value = "/sucursal/getAll")
 	public String getAllSucursal(Model model) {
-		List<Sucursal> list = this.sucursalService.getAllSucursal();
+		List<SucursalDTO> list = this.sucursalService.getAllSucursal();
 		model.addAttribute("list", list);
 		return "home";
 	}
@@ -44,7 +43,7 @@ class SucursalController {
 
 	@GetMapping(value = "/sucursal/update/{id}")
 	public String getUpdateSucursalPage(@PathVariable(value = "id") Integer idSucursal, Model model) {
-		Sucursal sucursal = this.sucursalService.getOne(idSucursal);
+		SucursalDTO sucursal = this.sucursalService.getOne(idSucursal);
 		model.addAttribute("sucursal", sucursal);
 		return "update";
 	}
@@ -59,7 +58,7 @@ class SucursalController {
 
 	@GetMapping(value = "/sucursal/getOne/{id}")
 	public String getOneSucursal(@PathVariable(value = "id") Integer idSucursal, Model model) {
-		Sucursal sucursal = this.sucursalService.getOne(idSucursal);
+		SucursalDTO sucursal = this.sucursalService.getOne(idSucursal);
 		model.addAttribute("sucursal", sucursal);
 		return "getOne";
 	}

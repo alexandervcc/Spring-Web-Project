@@ -6,9 +6,9 @@ import cat.itacademy.barcelonactiva.gimeno.carlos.s05.t01.n01.model.domain.Sucur
 import cat.itacademy.barcelonactiva.gimeno.carlos.s05.t01.n01.model.dto.SucursalDTO;
 
 public interface SucursalService {
-	List<Sucursal> getAllSucursal();
-	Sucursal createNew(SucursalDTO sucursalDTO);
+	List<SucursalDTO> getAllSucursal();
+	SucursalDTO createNew(SucursalDTO sucursalDTO);
 	Sucursal update(SucursalDTO sucursalDTO);
-	Sucursal getOne(Integer idSucursal);
+	SucursalDTO getOne(Integer idSucursal);
 	Sucursal deleteOne(Integer idSucursal);
 }

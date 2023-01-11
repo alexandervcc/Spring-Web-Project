@@ -1,0 +1,17 @@
+version: "3.8"
+
+services:
+  sucursal-db:
+    image: mysql
+    networks:
+      - spring-web
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=level1
+      - MYSQL_DATABASE=level1
+      - MYSQL_USER=level1
+      - MYSQL_PASSWORD=level1
+
+networks:
+  spring-web:
