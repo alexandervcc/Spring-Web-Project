@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+  <head th:replace="layouts :: header"> </head>
+
+  <body>
+    <nav th:replace="layouts :: navcheems"></nav>
+
+    <div class="container">
+      <h2>Sucursal List</h2>
+      <table class="table table-bordered table-striped">
+        <thead>
+          <tr>
+            <th>Sucursal ID</th>
+            <th>Sucursal Name</th>
+            <th>Sucursal Country</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="s:${list}">
+            <td th:text="${s.pk_SucursalID}"></td>
+            <td th:text="${s.nombreSucursal}"></td>
+            <td th:text="${s.paisSucursal}"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </body>
+</html>

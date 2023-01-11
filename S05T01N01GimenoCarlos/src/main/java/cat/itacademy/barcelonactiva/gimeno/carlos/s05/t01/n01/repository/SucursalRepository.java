@@ -11,11 +11,7 @@ public interface SucursalRepository extends JpaRepository<Sucursal, Integer> {
 	
 	//JPQL sin Query: palabras reservadas
 	Sucursal findByNombreSucursal(String nombreSucursal);
-	
-	//JPQL con Query:
-	@Query(value = "SELECT * FROM Sucursal s WHERE s.nombreSucursal = :nombreSucursal")
-	Sucursal findByNombreSucursalJPQL(String nombreSucursal);
-	
+		
 	//Native Query
 	@Query(value = "SELECT * FROM tbl_sucursal s WHERE s.nombre = :nombreSucursal", nativeQuery = true)
 	Sucursal findByNombreSucursalNative(String nombreSucursal);
