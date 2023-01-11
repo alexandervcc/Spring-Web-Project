@@ -1,24 +1,49 @@
 <!DOCTYPE html>
 
 <html xmlns:th="http://www.thymeleaf.org">
+  <head th:replace="layouts :: header"> </head>
 
-	<head th:replace="layouts :: header">	</head >
+  <body>
+    <nav th:replace="layouts :: navcheems"></nav>
 
+    <div class="container form-group">
+      <form th:action="@{/sucursal/add}" th:object="${sucursal}" method="POST">
+        <div class="row form-group pt-4">
+          <div class="col-2">Nombre:</div>
+          <div class="col-10">
+            <input
+              class="form-control"
+              type="text"
+              placeholder="Name"
+              th:field="${sucursal.nombreSucursal}"
+            />
+          </div>
+        </div>
+        <div class="row form-group">
+          <div class="col-2">Pais</div>
+          <div class="col-10">
+            <input
+              class="form-control"
+              type="text"
+              placeholder="Country"
+              th:field="${sucursal.paisSucursal}"
+            />
+          </div>
+        </div>
+        <div class="row form-group">
+          <div class="col-2">Tipo</div>
+          <div class="col-10">
+            <input
+              class="form-control"
+              type="text"
+              placeholder="Type"
+              th:field="${sucursal.tipoSucursal}"
+            />
+          </div>
+        </div>
 
-	<body>
-	
-	<nav th:replace="layouts :: navcheems" ></nav>
-	
-		<div class="container">
-			<form th:action="@{/sucursal/add}" th:object="${sucursal}" method="POST">
-				<input type="text" placeholder="Name" th:field="${sucursal.nombreSucursal}"/>
-				<input type="text" placeholder="Country" th:field="${sucursal.paisSucursal}"/>
-				<input type="text" placeholder="Type" th:field="${sucursal.tipoSucursal}"/>
-				
-				<button type="submit">Create Sucursal</button>
-			
-			</form>
-		</div>
-	
-	</body>
+        <button class="btn w-100 btn-primary" type="submit">Create Sucursal</button>
+      </form>
+    </div>
+  </body>
 </html>

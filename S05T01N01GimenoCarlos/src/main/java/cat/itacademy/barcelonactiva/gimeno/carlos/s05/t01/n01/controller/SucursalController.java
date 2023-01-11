@@ -35,7 +35,8 @@ class SucursalController {
 	}
 
 	@PostMapping(value = "/sucursal/add")
-	public String createNewSucursal() {
+	public String createNewSucursal(SucursalDTO sucursalDto, Model model) {
+		this.sucursalService.createNew(sucursalDto);
 		return "redirect:/sucursal/getAll";
 	}
 
