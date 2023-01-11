@@ -6,15 +6,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 
 import cat.itacademy.barcelonactiva.gimeno.carlos.s05.t01.n01.model.domain.Sucursal;
 import cat.itacademy.barcelonactiva.gimeno.carlos.s05.t01.n01.model.dto.SucursalDTO;
 import cat.itacademy.barcelonactiva.gimeno.carlos.s05.t01.n01.services.SucursalService;
-import jakarta.websocket.server.PathParam;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Controller
 @AllArgsConstructor
 class SucursalController {
@@ -23,11 +25,11 @@ class SucursalController {
 	@GetMapping(value = "/sucursal/getAll")
 	public String getAllSucursal(Model model) {
 		List<Sucursal> list = this.sucursalService.getAllSucursal();
-		model.addAttribute("list", list); 
+		model.addAttribute("list", list);
 		return "home";
 	}
 
-	@GetMapping(value="/sucursal/add")
+	@GetMapping(value = "/sucursal/add")
 	public String getNewSucursalPage(Model model) {
 		SucursalDTO sucursal = new SucursalDTO();
 		model.addAttribute("sucursal", sucursal);
@@ -46,12 +48,14 @@ class SucursalController {
 	}
 
 	@GetMapping(value = "/sucursal/getOne/{id}")
-	public String getOneSucursal(@PathParam(value = "id") Long idSucursal) {
-		return "getAll";
+	public String getOneSucursal(@PathVariable(value = "id") Integer idSucursal, Model model) {
+		Sucursal sucursal = this.sucursalService.getOne(idSucursal);
+		model.addAttribute("sucursal", sucursal);
+		return "getOne";
 	}
 
 	@DeleteMapping(value = "/sucursal/delete/{id}")
-	public String deleteOneSucursal(@PathParam(value = "id") Long idSucursal) {
+	public String deleteOneSucursal(@PathVariable(value = "id") Long idSucursal) {
 		return "getAll";
 	}
 

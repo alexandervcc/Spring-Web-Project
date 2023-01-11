@@ -14,6 +14,7 @@
             <th>Sucursal ID</th>
             <th>Sucursal Name</th>
             <th>Sucursal Country</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -21,6 +22,15 @@
             <td th:text="${s.pk_SucursalID}"></td>
             <td th:text="${s.nombreSucursal}"></td>
             <td th:text="${s.paisSucursal}"></td>
+            <td>
+              <div class="container">
+                <a th:href="@{/sucursal/getOne/}+${s.pk_SucursalID}">
+                  <button type="button" class="btn btn-success">View</button>
+                </a>
+                <button type="button" class="btn btn-primary">Edit</button>
+                <button type="button" class="btn btn-danger">Delete</button>
+              </div>
+            </td>
           </tr>
         </tbody>
       </table>

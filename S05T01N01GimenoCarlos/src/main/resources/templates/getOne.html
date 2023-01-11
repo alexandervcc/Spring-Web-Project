@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+  <head th:replace="layouts :: header"> </head>
+
+  <body>
+    <nav th:replace="layouts :: navcheems"></nav>
+
+    <div class="container form-group">
+      <div class="row form-group pt-4">
+        <div class="col-2">ID:</div>
+        <div class="col-10">
+          <input
+            disabled
+            class="form-control"
+            type="text"
+            placeholder="ID"
+            th:field="${sucursal.pk_SucursalID}"
+          />
+        </div>
+      </div>
+      <div class="row form-group">
+        <div class="col-2">Nombre:</div>
+        <div class="col-10">
+          <input
+            disabled
+            class="form-control"
+            type="text"
+            placeholder="Name"
+            th:field="${sucursal.nombreSucursal}"
+          />
+        </div>
+      </div>
+      <div class="row form-group">
+        <div class="col-2">Pais</div>
+        <div class="col-10">
+          <input
+            disabled
+            class="form-control"
+            type="text"
+            placeholder="Country"
+            th:field="${sucursal.paisSucursal}"
+          />
+        </div>
+      </div>
+<!--       <div class="row form-group">
+        <div class="col-2">Tipo</div>
+        <div class="col-10">
+          <input
+            disabled
+            class="form-control"
+            type="text"
+            placeholder="Type"
+            th:field="${sucursal.tipoSucursal}"
+          />
+        </div>
+      </div> -->
+    </div>
+  </body>
+</html>
