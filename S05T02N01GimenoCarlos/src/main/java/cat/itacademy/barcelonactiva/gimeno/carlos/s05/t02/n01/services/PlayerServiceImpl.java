@@ -49,49 +49,43 @@ public class PlayerServiceImpl implements PlayerService {
     public List<PlayerDto> getAllPlayers() {
         List<PlayerDto> players = this.playerRepository.findAll()
                 .stream()
-                .map(j -> this.playerMapper.convertToDto(j))
+                .map(j -> {
+                    PlayerDto playerDto = this.playerMapper.convertToDto(j);
+                    playerDto.listGames = null;
+                    return playerDto;
+                })
                 .collect(Collectors.toList());
 
-        players.forEach(j -> {
-            j.percentage = this.gamesService.calculatePercentage(j.id);
-        });
         return players;
     }
 
     @Override
     public PlayerDto getBestPlayer() {
-        List<PlayerDto> list = this.getAllPlayers();
-        list.sort((j1, j2) -> {
-            if (j1.percentage < j2.percentage) {
-                return 1;
-            }
-            if (j1.percentage > j2.percentage) {
-                return -1;
-            }
-            return 0;
-        });
-        return list.get(0);
+        List<PlayerDto> list = this.getPlayersRanking();
+        PlayerDto playerDto = list.get(0);
+        playerDto.listGames = null;
+        return playerDto;
+    }
+
+    @Override
+    public PlayerDto getWorstPlayer() {
+        List<PlayerDto> list = this.getPlayersRanking();
+        PlayerDto playerDto = list.get(list.size() - 1);
+        playerDto.listGames = null;
+        return playerDto;
     }
 
     @Override
     public List<PlayerDto> getPlayersRanking() {
         List<PlayerDto> list = this.getAllPlayers();
-        list.sort((j1, j2) -> {
-            if (j1.percentage < j2.percentage) {
-                return 1;
-            }
-            if (j1.percentage > j2.percentage) {
-                return -1;
-            }
-            return 0;
+        list.forEach(j -> {
+            j.percentage = this.gamesService.calculatePercentage(j.id);
         });
-        return list;
-    }
 
-    @Override
-    public PlayerDto getWorstPlayer() {
-        List<PlayerDto> list = this.getAllPlayers();
-        list.sort((j1, j2) -> {
+        List<PlayerDto> list2 = list.stream()
+                .filter(j -> j.percentage >= 0)
+                .collect(Collectors.toList());
+        list2.sort((j1, j2) -> {
             if (j1.percentage < j2.percentage) {
                 return 1;
             }
@@ -100,7 +94,8 @@ public class PlayerServiceImpl implements PlayerService {
             }
             return 0;
         });
-        return list.get(list.size() - 1);
+
+        return list2;
     }
 
     @Override
@@ -118,7 +113,9 @@ public class PlayerServiceImpl implements PlayerService {
         Player p = playerOp.get();
         p.setNombre(playerDto.nombre);
         p = this.playerRepository.save(p);
-        return this.playerMapper.convertToDto(p);
+        PlayerDto playerDto2 = this.playerMapper.convertToDto(p);
+        playerDto2.listGames = null;
+        return playerDto2;
     }
 
 }
