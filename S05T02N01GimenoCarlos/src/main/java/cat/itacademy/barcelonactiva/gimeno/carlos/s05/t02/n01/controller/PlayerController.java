@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -26,13 +27,13 @@ public class PlayerController {
     private final GamesService gamesService;
 
     @PostMapping(value = "")
-    public ResponseEntity<?> createNewPlayer(PlayerDto playerDto) {
+    public ResponseEntity<?> createNewPlayer(@RequestBody(required = true) PlayerDto playerDto) {
         PlayerDto playerDto2 = this.playerService.createNewPlayer(playerDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(playerDto2);
     }
 
     @PutMapping(value = "")
-    public ResponseEntity<?> updatePlayer(PlayerDto playerDto) {
+    public ResponseEntity<?> updatePlayer(@RequestBody(required = true)PlayerDto playerDto) {
         PlayerDto playerDto2 = this.playerService.updatePlayer(playerDto);
         return ResponseEntity.status(HttpStatus.OK).body(playerDto2);
     }
@@ -73,7 +74,7 @@ public class PlayerController {
         return ResponseEntity.status(HttpStatus.OK).body(playerDto);
     }
 
-    @GetMapping(value = "/ranking/lose")
+    @GetMapping(value = "/ranking/loser")
     public ResponseEntity<PlayerDto> getRankingLoser() {
         PlayerDto playerDto = this.playerService.getWorstPlayer();
         return ResponseEntity.status(HttpStatus.OK).body(playerDto);

@@ -62,10 +62,10 @@ public class PlayerServiceImpl implements PlayerService {
     public PlayerDto getBestPlayer() {
         List<PlayerDto> list = this.getAllPlayers();
         list.sort((j1, j2) -> {
-            if (j1.percentage > j2.percentage) {
+            if (j1.percentage < j2.percentage) {
                 return 1;
             }
-            if (j1.percentage < j2.percentage) {
+            if (j1.percentage > j2.percentage) {
                 return -1;
             }
             return 0;
@@ -77,10 +77,10 @@ public class PlayerServiceImpl implements PlayerService {
     public List<PlayerDto> getPlayersRanking() {
         List<PlayerDto> list = this.getAllPlayers();
         list.sort((j1, j2) -> {
-            if (j1.percentage > j2.percentage) {
+            if (j1.percentage < j2.percentage) {
                 return 1;
             }
-            if (j1.percentage < j2.percentage) {
+            if (j1.percentage > j2.percentage) {
                 return -1;
             }
             return 0;
@@ -92,10 +92,10 @@ public class PlayerServiceImpl implements PlayerService {
     public PlayerDto getWorstPlayer() {
         List<PlayerDto> list = this.getAllPlayers();
         list.sort((j1, j2) -> {
-            if (j1.percentage > j2.percentage) {
+            if (j1.percentage < j2.percentage) {
                 return 1;
             }
-            if (j1.percentage < j2.percentage) {
+            if (j1.percentage > j2.percentage) {
                 return -1;
             }
             return 0;

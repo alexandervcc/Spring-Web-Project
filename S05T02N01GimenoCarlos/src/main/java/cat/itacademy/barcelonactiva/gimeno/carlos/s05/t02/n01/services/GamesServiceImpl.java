@@ -1,6 +1,5 @@
 package cat.itacademy.barcelonactiva.gimeno.carlos.s05.t02.n01.services;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -30,9 +29,8 @@ public class GamesServiceImpl implements GamesService {
         if (p.isEmpty()) {
             throw new NotFoundException("Jugador no encontrado para id: " + idPlayer);
         }
-        Player player = p.get();
-        player.setListGames(new ArrayList<Games>());
-        this.playerRepository.save(player);
+        List<Games> listGames = p.get().getListGames();
+        this.gamesRepository.deleteAllInBatch(listGames);
     }
 
     @Override
