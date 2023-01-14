@@ -16,5 +16,6 @@ public class PlayerDto {
     public Integer id;
     public String nombre;
     public Date fechaRegistro;
+    public Double percentage;
     public List<GamesDto> listGames;
 }
