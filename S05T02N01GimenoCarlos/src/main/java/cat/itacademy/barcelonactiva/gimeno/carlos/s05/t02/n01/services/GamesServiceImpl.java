@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import cat.itacademy.barcelonactiva.gimeno.carlos.s05.t02.n01.domain.dto.GamesDto;
 import cat.itacademy.barcelonactiva.gimeno.carlos.s05.t02.n01.domain.model.Games;
 import cat.itacademy.barcelonactiva.gimeno.carlos.s05.t02.n01.domain.model.Player;
+import cat.itacademy.barcelonactiva.gimeno.carlos.s05.t02.n01.exceptions.NotFoundException;
 import cat.itacademy.barcelonactiva.gimeno.carlos.s05.t02.n01.repository.GamesRepository;
 import cat.itacademy.barcelonactiva.gimeno.carlos.s05.t02.n01.repository.PlayerRepository;
 import cat.itacademy.barcelonactiva.gimeno.carlos.s05.t02.n01.services.interfaces.GamesService;
@@ -27,7 +28,7 @@ public class GamesServiceImpl implements GamesService {
     public void deleteGamesFromPlayer(Integer idPlayer) {
         Optional<Player> p = this.playerRepository.findById(idPlayer);
         if (p.isEmpty()) {
-            return;
+            throw new NotFoundException("Jugador no encontrado para id: " + idPlayer);
         }
         Player player = p.get();
         player.setListGames(new ArrayList<Games>());
@@ -38,7 +39,7 @@ public class GamesServiceImpl implements GamesService {
     public List<GamesDto> getPlayerGames(Integer idPlayer) {
         Optional<Player> p = this.playerRepository.findById(idPlayer);
         if (p.isEmpty()) {
-            return null;
+            throw new NotFoundException("Jugador no encontrado para id: " + idPlayer);
         }
         List<GamesDto> list = p.get().getListGames()
                 .stream()
@@ -51,7 +52,7 @@ public class GamesServiceImpl implements GamesService {
     public GamesDto launchDices(Integer idPlayer) {
         Optional<Player> playerOptional = this.playerRepository.findById(idPlayer);
         if (playerOptional.isEmpty()) {
-            return null;
+            throw new NotFoundException("Jugador no encontrado para id: " + idPlayer);
         }
         // Math.random() -> 0.0 - 1.0
         // *10 -> 0.0 -> 10.0

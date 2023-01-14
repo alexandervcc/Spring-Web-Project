@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import cat.itacademy.barcelonactiva.gimeno.carlos.s05.t02.n01.domain.dto.PlayerDto;
 import cat.itacademy.barcelonactiva.gimeno.carlos.s05.t02.n01.domain.model.Games;
 import cat.itacademy.barcelonactiva.gimeno.carlos.s05.t02.n01.domain.model.Player;
+import cat.itacademy.barcelonactiva.gimeno.carlos.s05.t02.n01.exceptions.InvalidDataException;
+import cat.itacademy.barcelonactiva.gimeno.carlos.s05.t02.n01.exceptions.NotFoundException;
 import cat.itacademy.barcelonactiva.gimeno.carlos.s05.t02.n01.repository.PlayerRepository;
 import cat.itacademy.barcelonactiva.gimeno.carlos.s05.t02.n01.services.interfaces.GamesService;
 import cat.itacademy.barcelonactiva.gimeno.carlos.s05.t02.n01.services.interfaces.PlayerService;
@@ -29,7 +31,7 @@ public class PlayerServiceImpl implements PlayerService {
         if (!playerDto.nombre.toUpperCase().equals("ANONIMO")) {
             List<Player> l = this.playerRepository.findByNombre(playerDto.nombre);
             if (l.size() > 0) {
-                return null;
+                throw new InvalidDataException("El nombre: " + playerDto.nombre + " esta en uso.");
             }
         }
 
@@ -106,12 +108,12 @@ public class PlayerServiceImpl implements PlayerService {
         if (!playerDto.nombre.toUpperCase().equals("ANONIMO")) {
             List<Player> l = this.playerRepository.findByNombre(playerDto.nombre);
             if (l.size() > 0) {
-                return null;
+                throw new InvalidDataException("El nombre: " + playerDto.nombre + " esta en uso.");
             }
         }
         Optional<Player> playerOp = this.playerRepository.findById(playerDto.id);
         if (playerOp.isEmpty()) {
-            return null;
+            throw new NotFoundException("Jugador no encontrado para id: " + playerDto.id);
         }
         Player p = playerOp.get();
         p.setNombre(playerDto.nombre);
