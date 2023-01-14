@@ -8,5 +8,5 @@ public interface GamesService {
     public GamesDto launchDices(Integer idPlayer);
     public void deleteGamesFromPlayer(Integer idPlayer);
     public List<GamesDto> getPlayerGames(Integer idPlayer);
-    
+    public double calculatePercentage(Integer idPlayer);
 }
