@@ -10,4 +10,6 @@ import cat.itacademy.barcelonactiva.gimeno.carlos.s05.t02.n01.domain.model.Playe
 @Repository
 public interface PlayerRepository extends MongoRepository<Player, String> {
    List<Player> findByNombre(String nombre);
+
+   Player findByEmail(String email);
 }
