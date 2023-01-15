@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class PlayerDto {
-    public Integer id;
+    public String id;
     public String nombre;
     public Date fechaRegistro;
     public Double percentage;

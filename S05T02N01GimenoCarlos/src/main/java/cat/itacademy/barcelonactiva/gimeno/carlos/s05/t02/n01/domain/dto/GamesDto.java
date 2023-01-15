@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class GamesDto {
-    public Integer id;
+    public String id;
     public Integer value;
     public Boolean result;
 }

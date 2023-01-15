@@ -13,13 +13,28 @@ public class Handler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value = { InvalidDataException.class })
     public ResponseEntity<?> handleInvalidDataException(InvalidDataException ex) {
-        ErrorDto error = ErrorDto.builder().code(HttpStatus.BAD_REQUEST.value()).error(ex.getMessage()).build();
+        ErrorDto error = ErrorDto.builder()
+                .code(HttpStatus.BAD_REQUEST.value())
+                .error(ex.getMessage())
+                .build();
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
 
     @ExceptionHandler(value = { NotFoundException.class })
     public ResponseEntity<?> handlenotfoundException(NotFoundException ex) {
-        ErrorDto error = ErrorDto.builder().code(HttpStatus.NOT_FOUND.value()).error(ex.getMessage()).build();
+        ErrorDto error = ErrorDto.builder()
+                .code(HttpStatus.NOT_FOUND.value())
+                .error(ex.getMessage())
+                .build();
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+    }
+
+    @ExceptionHandler(value = { ServerErrorException.class })
+    public ResponseEntity<?> handleServerErrorException(ServerErrorException ex) {
+        ErrorDto error = ErrorDto.builder()
+                .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                .error(ex.getMessage())
+                .build();
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
     }
 }

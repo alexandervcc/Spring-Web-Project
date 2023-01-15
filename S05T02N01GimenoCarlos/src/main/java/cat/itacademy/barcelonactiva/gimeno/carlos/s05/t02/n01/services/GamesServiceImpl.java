@@ -1,15 +1,18 @@
 package cat.itacademy.barcelonactiva.gimeno.carlos.s05.t02.n01.services;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import cat.itacademy.barcelonactiva.gimeno.carlos.s05.t02.n01.domain.dto.GamesDto;
 import cat.itacademy.barcelonactiva.gimeno.carlos.s05.t02.n01.domain.model.Games;
 import cat.itacademy.barcelonactiva.gimeno.carlos.s05.t02.n01.domain.model.Player;
 import cat.itacademy.barcelonactiva.gimeno.carlos.s05.t02.n01.exceptions.NotFoundException;
+import cat.itacademy.barcelonactiva.gimeno.carlos.s05.t02.n01.exceptions.ServerErrorException;
 import cat.itacademy.barcelonactiva.gimeno.carlos.s05.t02.n01.repository.GamesRepository;
 import cat.itacademy.barcelonactiva.gimeno.carlos.s05.t02.n01.repository.PlayerRepository;
 import cat.itacademy.barcelonactiva.gimeno.carlos.s05.t02.n01.services.interfaces.GamesService;
@@ -24,17 +27,27 @@ public class GamesServiceImpl implements GamesService {
     private final GamesMapper gamesMapper;
 
     @Override
-    public void deleteGamesFromPlayer(Integer idPlayer) {
+    @Transactional(rollbackFor = ServerErrorException.class)
+    public void deleteGamesFromPlayer(String idPlayer) {
         Optional<Player> p = this.playerRepository.findById(idPlayer);
         if (p.isEmpty()) {
             throw new NotFoundException("Jugador no encontrado para id: " + idPlayer);
         }
+        // Actualizar coleccion de juegos
         List<Games> listGames = p.get().getListGames();
-        this.gamesRepository.deleteAllInBatch(listGames);
+        try {
+            this.gamesRepository.deleteAll(listGames);
+            // Actualizar coleccion de player
+            Player player = p.get();
+            player.setListGames(new ArrayList<Games>());
+            this.playerRepository.save(player);
+        } catch (Exception e) {
+            throw new ServerErrorException("Error en persistencia de db.");
+        }
     }
 
     @Override
-    public List<GamesDto> getPlayerGames(Integer idPlayer) {
+    public List<GamesDto> getPlayerGames(String idPlayer) {
         Optional<Player> p = this.playerRepository.findById(idPlayer);
         if (p.isEmpty()) {
             throw new NotFoundException("Jugador no encontrado para id: " + idPlayer);
@@ -47,7 +60,8 @@ public class GamesServiceImpl implements GamesService {
     }
 
     @Override
-    public GamesDto launchDices(Integer idPlayer) {
+    @Transactional(rollbackFor = ServerErrorException.class)
+    public GamesDto launchDices(String idPlayer) {
         Optional<Player> playerOptional = this.playerRepository.findById(idPlayer);
         if (playerOptional.isEmpty()) {
             throw new NotFoundException("Jugador no encontrado para id: " + idPlayer);
@@ -70,12 +84,21 @@ public class GamesServiceImpl implements GamesService {
                 .player(currentPlayer)
                 .build();
 
-        newGame = this.gamesRepository.save(newGame);
+        try {
+            newGame = this.gamesRepository.save(newGame);
+            List<Games> playerGames = currentPlayer.getListGames();
+            playerGames.add(newGame);
+            currentPlayer.setListGames(playerGames);
+            this.playerRepository.save(currentPlayer);
+        } catch (Exception e) {
+            throw new ServerErrorException("Error en persistencia de db.");
+        }
+
         return this.gamesMapper.convertToDto(newGame);
     }
 
     @Override
-    public double calculatePercentage(Integer idPlayer) {
+    public double calculatePercentage(String idPlayer) {
         List<GamesDto> games = this.getPlayerGames(idPlayer);
         double totalGames = games.size();
         double winGames = 0;
