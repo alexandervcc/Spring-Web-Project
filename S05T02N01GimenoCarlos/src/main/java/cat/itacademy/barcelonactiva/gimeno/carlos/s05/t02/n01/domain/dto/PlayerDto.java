@@ -16,6 +16,7 @@ public class PlayerDto {
     public String id;
     public String nombre;
     public Date fechaRegistro;
+    public String password;
     public Double percentage;
     public List<GamesDto> listGames;
 }

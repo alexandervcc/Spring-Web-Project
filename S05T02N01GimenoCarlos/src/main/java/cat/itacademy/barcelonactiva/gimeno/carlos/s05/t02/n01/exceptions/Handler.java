@@ -2,13 +2,13 @@ package cat.itacademy.barcelonactiva.gimeno.carlos.s05.t02.n01.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import cat.itacademy.barcelonactiva.gimeno.carlos.s05.t02.n01.domain.dto.ErrorDto;
 
-@ControllerAdvice
+@RestControllerAdvice
 public class Handler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value = { InvalidDataException.class })

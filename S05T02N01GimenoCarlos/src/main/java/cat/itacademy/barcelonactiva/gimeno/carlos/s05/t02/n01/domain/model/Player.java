@@ -28,7 +28,6 @@ public class Player implements UserDetails {
     private String nombre;
     private Date fechaRegistro;
 
-    private String email;
     private String password;
 
     @DBRef
