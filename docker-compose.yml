@@ -24,5 +24,16 @@ services:
       - MYSQL_DATABASE=dados
       - MYSQL_USER=dados
       - MYSQL_PASSWORD=dados
+  
+  mongo-dados:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    networks:
+      - spring-web
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=mongo
+      - MONGO_INITDB_ROOT_PASSWORD=mongo
+      - MONGO_INITDB_DATABASE=mongo
 networks:
   spring-web:

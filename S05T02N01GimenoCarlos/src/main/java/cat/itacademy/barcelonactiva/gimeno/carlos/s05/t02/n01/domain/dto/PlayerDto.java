@@ -13,9 +13,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class PlayerDto {
-    public Integer id;
+    public String id;
     public String nombre;
     public Date fechaRegistro;
+    public String password;
     public Double percentage;
     public List<GamesDto> listGames;
 }

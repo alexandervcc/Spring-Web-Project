@@ -39,13 +39,13 @@ public class PlayerController {
     }
 
     @PostMapping(value = "/{id}/games")
-    public ResponseEntity<GamesDto> playDados(@PathVariable(name = "id") Integer idPlayer) {
+    public ResponseEntity<GamesDto> playDados(@PathVariable(name = "id") String idPlayer) {
         GamesDto game = this.gamesService.launchDices(idPlayer);
         return ResponseEntity.status(HttpStatus.OK).body(game);
     }
 
     @DeleteMapping(value = "/{id}/games")
-    public ResponseEntity<Void> deletePlayerData(@PathVariable(name = "id") Integer idPlayer) {
+    public ResponseEntity<Void> deletePlayerData(@PathVariable(name = "id") String idPlayer) {
         this.gamesService.deleteGamesFromPlayer(idPlayer);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
@@ -57,7 +57,7 @@ public class PlayerController {
     }
 
     @GetMapping(value = "/{id}/games")
-    public ResponseEntity<List<GamesDto>> getOnePlayerData(@PathVariable(name = "id") Integer idPlayer) {
+    public ResponseEntity<List<GamesDto>> getOnePlayerData(@PathVariable(name = "id") String idPlayer) {
         List<GamesDto> list = this.gamesService.getPlayerGames(idPlayer);
         return ResponseEntity.status(HttpStatus.OK).body(list);
     }

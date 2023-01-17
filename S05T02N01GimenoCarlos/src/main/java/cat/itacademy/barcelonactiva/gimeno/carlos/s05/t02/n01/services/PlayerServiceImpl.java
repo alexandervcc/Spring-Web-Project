@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import cat.itacademy.barcelonactiva.gimeno.carlos.s05.t02.n01.domain.dto.PlayerDto;
@@ -21,8 +22,9 @@ import lombok.AllArgsConstructor;
 
 @Service
 @AllArgsConstructor
-public class PlayerServiceImpl implements PlayerService {
+public class PlayerServiceImpl implements PlayerService{
     private final PlayerRepository playerRepository;
+    private final PasswordEncoder passwordEncoder;
     private final PlayerMapper playerMapper;
     private final GamesService gamesService;
 
@@ -38,6 +40,7 @@ public class PlayerServiceImpl implements PlayerService {
         Player newPlayer = Player.builder()
                 .nombre(playerDto.nombre)
                 .fechaRegistro(new Date())
+                .password(passwordEncoder.encode(playerDto.password))
                 .listGames(new ArrayList<Games>())
                 .build();
 
@@ -117,5 +120,7 @@ public class PlayerServiceImpl implements PlayerService {
         playerDto2.listGames = null;
         return playerDto2;
     }
+
+
 
 }
