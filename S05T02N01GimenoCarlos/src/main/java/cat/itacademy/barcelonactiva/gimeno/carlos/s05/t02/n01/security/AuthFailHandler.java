@@ -19,7 +19,9 @@ import jakarta.servlet.http.HttpServletResponse;
 public class AuthFailHandler implements AuthenticationFailureHandler {
 
     @Override
-    public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
+    public void onAuthenticationFailure(
+            HttpServletRequest request,
+            HttpServletResponse response,
             AuthenticationException ex) throws IOException, ServletException {
         ErrorDto errorDto = ErrorDto.builder().code(HttpStatus.UNAUTHORIZED.value())
                 .error(ex.getMessage()).build();
