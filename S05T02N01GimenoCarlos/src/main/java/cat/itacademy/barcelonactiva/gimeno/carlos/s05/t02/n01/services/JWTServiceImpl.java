@@ -1,6 +1,7 @@
 package cat.itacademy.barcelonactiva.gimeno.carlos.s05.t02.n01.services;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.stereotype.Service;
 
@@ -27,12 +28,17 @@ public class JWTServiceImpl implements JwtService {
 
     @Override
     public String generateToken(Player player) {
+        List<String> listAuthorities = player
+                .getAuthorities()
+                .stream()
+                .map(auth -> auth.getAuthority())
+                .toList();
+
         return JWT.create()
                 .withSubject(player.getNombre())
-                
+                .withClaim("roles", listAuthorities)
                 .withIssuedAt(new Date(System.currentTimeMillis()))
                 .withExpiresAt(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24))
-                .withClaim("roles", "USER_ROLE")
                 .sign(algorithm);
 
     }
