@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import cat.itacademy.barcelonactiva.gimeno.carlos.s05.t02.n01.domain.dto.ReqAuthDto;
 import cat.itacademy.barcelonactiva.gimeno.carlos.s05.t02.n01.domain.dto.ResAuthDto;
 import cat.itacademy.barcelonactiva.gimeno.carlos.s05.t02.n01.services.interfaces.AuthServive;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
 @RestController
@@ -19,7 +20,7 @@ public class AuthController {
     private final AuthServive authServive;
 
     @PostMapping(path = "/login")
-    public ResponseEntity<ResAuthDto> login(@RequestBody ReqAuthDto authDto) {
+    public ResponseEntity<ResAuthDto> login(@Valid @RequestBody ReqAuthDto authDto) {
         String jwt = this.authServive.logIn(authDto);
 
         HttpHeaders responseHeaders = new HttpHeaders();
@@ -31,7 +32,7 @@ public class AuthController {
     }
 
     @PostMapping(path = "/sign-up")
-    public ResponseEntity<ResAuthDto> signUp(@RequestBody ReqAuthDto authDto) {
+    public ResponseEntity<ResAuthDto> signUp(@Valid @RequestBody ReqAuthDto authDto) {
         this.authServive.signUp(authDto);
         ResAuthDto resAuthDto = ResAuthDto.builder().message("Usuario creado con exito.").build();
 

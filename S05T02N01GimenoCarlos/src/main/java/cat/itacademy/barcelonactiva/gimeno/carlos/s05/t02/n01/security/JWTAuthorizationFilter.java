@@ -7,7 +7,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
-import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import cat.itacademy.barcelonactiva.gimeno.carlos.s05.t02.n01.services.interfaces.JwtService;
@@ -20,7 +19,6 @@ import lombok.AllArgsConstructor;
 import static cat.itacademy.barcelonactiva.gimeno.carlos.s05.t02.n01.constants.Constants.AUTHORIZATION;
 import static cat.itacademy.barcelonactiva.gimeno.carlos.s05.t02.n01.constants.Constants.BEARER;
 
-@Component
 @AllArgsConstructor
 public class JWTAuthorizationFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
