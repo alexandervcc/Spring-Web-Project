@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import cat.itacademy.barcelonactiva.gimeno.carlos.s05.t02.n01.domain.dto.ReqAuthDto;
 import cat.itacademy.barcelonactiva.gimeno.carlos.s05.t02.n01.domain.model.Games;
 import cat.itacademy.barcelonactiva.gimeno.carlos.s05.t02.n01.domain.model.Player;
+import cat.itacademy.barcelonactiva.gimeno.carlos.s05.t02.n01.domain.model.Role;
 import cat.itacademy.barcelonactiva.gimeno.carlos.s05.t02.n01.exceptions.InvalidDataException;
 import cat.itacademy.barcelonactiva.gimeno.carlos.s05.t02.n01.repository.PlayerRepository;
 import cat.itacademy.barcelonactiva.gimeno.carlos.s05.t02.n01.services.interfaces.AuthServive;
@@ -35,17 +36,20 @@ public class AuthServiceImpl implements AuthServive {
 
     @Override
     public void signUp(ReqAuthDto playerDto) {
+        Role role = Role.USER;
         if (!playerDto.name.toUpperCase().equals("ANONIMO")) {
             List<Player> l = this.playerRepository.findByNombre(playerDto.name);
             if (l.size() > 0) {
                 throw new InvalidDataException("El nombre: " + playerDto.name + " esta en uso.");
             }
+            role = Role.ANONYMOUS;
         }
 
         Player newPlayer = Player.builder()
                 .nombre(playerDto.name)
                 .fechaRegistro(new Date())
                 .password(passwordEncoder.encode(playerDto.password))
+                .role(role)
                 .listGames(new ArrayList<Games>())
                 .build();
 

@@ -8,6 +8,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -30,13 +31,15 @@ public class Player implements UserDetails {
 
     private String password;
 
+    private Role role;
+
     @DBRef
     @JsonIgnore
     private List<Games> listGames;
 
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {//roles
-        return null;
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(role.name()));
     }
 
     @Override
