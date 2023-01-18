@@ -26,12 +26,6 @@ public class PlayerController {
     private final PlayerService playerService;
     private final GamesService gamesService;
 
-    @PostMapping(value = "")
-    public ResponseEntity<?> createNewPlayer(@RequestBody(required = true) PlayerDto playerDto) {
-        PlayerDto playerDto2 = this.playerService.createNewPlayer(playerDto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(playerDto2);
-    }
-
     @PutMapping(value = "")
     public ResponseEntity<?> updatePlayer(@RequestBody(required = true)PlayerDto playerDto) {
         PlayerDto playerDto2 = this.playerService.updatePlayer(playerDto);

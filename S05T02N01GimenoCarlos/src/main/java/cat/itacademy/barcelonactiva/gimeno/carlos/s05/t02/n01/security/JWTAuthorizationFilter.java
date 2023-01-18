@@ -1,24 +1,16 @@
 package cat.itacademy.barcelonactiva.gimeno.carlos.s05.t02.n01.security;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.JWTVerifier;
-import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.interfaces.DecodedJWT;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import cat.itacademy.barcelonactiva.gimeno.carlos.s05.t02.n01.domain.dto.ErrorDto;
+import cat.itacademy.barcelonactiva.gimeno.carlos.s05.t02.n01.services.interfaces.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -31,46 +23,39 @@ import static cat.itacademy.barcelonactiva.gimeno.carlos.s05.t02.n01.constants.C
 @Component
 @AllArgsConstructor
 public class JWTAuthorizationFilter extends OncePerRequestFilter {
-    private final Algorithm algorithm;
+    private final JwtService jwtService;
+    private final UserDetailsService userDetailsService;
 
     @Override
     protected void doFilterInternal(
             HttpServletRequest request,
             HttpServletResponse response,
-            FilterChain filterChain)
-            throws ServletException, IOException {
+            FilterChain filterChain) throws ServletException, IOException {
+        String authHeader = request.getHeader(AUTHORIZATION);
 
-        try {
-            String authHeader = request.getHeader(AUTHORIZATION);
+        if (authHeader == null || !authHeader.startsWith(BEARER)) {
+            filterChain.doFilter(request, response);
+            return;
+        }
 
-            if (authHeader == null || !authHeader.startsWith(BEARER)) {
-                throw new Exception("Error leyendo JWT.");
-            }
+        String jwt = authHeader.substring(BEARER.length());
 
-            String token = authHeader.substring(BEARER.length());
-            JWTVerifier verifier = JWT.require(algorithm).build();
+        String username = jwtService.extractUsername(jwt);
 
-            DecodedJWT decodedJWT = verifier.verify(token);
+        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
 
-            String username = decodedJWT.getSubject();
+            UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+                    userDetails,
+                    null,
+                    userDetails.getAuthorities());
 
-            String role = decodedJWT.getClaim("roles").asString();
+            authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
-            Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
-
-            authorities.add(new SimpleGrantedAuthority(role));
-            UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(username,
-                    null, authorities);
             SecurityContextHolder.getContext().setAuthentication(authToken);
 
-            filterChain.doFilter(request, response);
-
-        } catch (Exception e) {
-            response.setStatus(HttpStatus.FORBIDDEN.value());
-            ErrorDto errorDto = ErrorDto.builder().code(HttpStatus.FORBIDDEN.value()).error(e.getMessage()).build();
-            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-            new ObjectMapper().writeValue(response.getOutputStream(), errorDto);
         }
+        filterChain.doFilter(request, response);
     }
 
 }

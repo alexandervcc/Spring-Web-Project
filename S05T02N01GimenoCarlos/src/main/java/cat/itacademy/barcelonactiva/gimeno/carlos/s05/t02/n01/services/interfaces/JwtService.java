@@ -4,4 +4,7 @@ import cat.itacademy.barcelonactiva.gimeno.carlos.s05.t02.n01.domain.model.Playe
 
 public interface JwtService {
     String generateToken(Player player);
+
+    String extractUsername(String jwt);
+
 }

@@ -14,7 +14,6 @@ public class PlayerMapper {
 
     public PlayerDto convertToDto(Player player) {
         PlayerDto playerDto = mapper.map(player, PlayerDto.class);
-        playerDto.password = null;
         return playerDto;
       }
     
