@@ -35,7 +35,7 @@ public class JWTServiceImpl implements JwtService {
                 .toList();
 
         return JWT.create()
-                .withSubject(player.getNombre())
+                .withSubject(player.getId())
                 .withClaim("roles", listAuthorities)
                 .withIssuedAt(new Date(System.currentTimeMillis()))
                 .withExpiresAt(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24))

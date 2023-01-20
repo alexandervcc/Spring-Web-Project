@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Service;
 
 import cat.itacademy.barcelonactiva.gimeno.carlos.s05.t02.n01.domain.dto.PlayerDto;
@@ -94,6 +95,12 @@ public class PlayerServiceImpl implements PlayerService {
         PlayerDto playerDto2 = this.playerMapper.convertToDto(p);
         playerDto2.listGames = null;
         return playerDto2;
+    }
+
+    @Override
+    public Player getPlayerById(String id) {
+        return this.playerRepository.findById(id)
+                .orElseThrow(() -> new BadCredentialsException("Player not found for given data."));
     }
 
 }

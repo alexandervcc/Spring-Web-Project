@@ -4,12 +4,12 @@ import java.io.IOException;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import cat.itacademy.barcelonactiva.gimeno.carlos.s05.t02.n01.domain.model.Player;
 import cat.itacademy.barcelonactiva.gimeno.carlos.s05.t02.n01.services.interfaces.JwtService;
+import cat.itacademy.barcelonactiva.gimeno.carlos.s05.t02.n01.services.interfaces.PlayerService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,7 +22,7 @@ import static cat.itacademy.barcelonactiva.gimeno.carlos.s05.t02.n01.constants.C
 @AllArgsConstructor
 public class JWTAuthorizationFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
-    private final UserDetailsService userDetailsService;
+    private final PlayerService playerService;
 
     @Override
     protected void doFilterInternal(
@@ -38,15 +38,15 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
 
         String jwt = authHeader.substring(BEARER.length());
 
-        String username = jwtService.extractUsername(jwt);
+        String userIdentifier = jwtService.extractUsername(jwt);
 
-        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
+        if (userIdentifier != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            Player player  = this.playerService.getPlayerById(userIdentifier);
 
             UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                    userDetails,
+                    player.getId(),
                     null,
-                    userDetails.getAuthorities());
+                    player.getAuthorities());
 
             authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 

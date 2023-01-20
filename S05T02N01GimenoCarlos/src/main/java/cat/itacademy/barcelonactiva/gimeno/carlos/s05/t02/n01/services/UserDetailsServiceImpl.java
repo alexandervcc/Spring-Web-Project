@@ -1,6 +1,7 @@
 package cat.itacademy.barcelonactiva.gimeno.carlos.s05.t02.n01.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -23,5 +24,13 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             throw new UsernameNotFoundException("Usuario no encontrado.");
         }
         return playerList.get(0);
+    }
+
+    public Player findById(String id) throws UsernameNotFoundException {
+        Optional<Player> playerOptional = this.playerRepository.findById(id);
+        if (playerOptional.isEmpty()) {
+            throw new UsernameNotFoundException("Usuario no encontrado.");
+        }
+        return playerOptional.get();
     }
 }

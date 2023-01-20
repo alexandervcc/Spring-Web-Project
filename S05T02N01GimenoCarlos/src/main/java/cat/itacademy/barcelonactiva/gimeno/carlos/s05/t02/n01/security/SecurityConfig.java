@@ -7,11 +7,11 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import cat.itacademy.barcelonactiva.gimeno.carlos.s05.t02.n01.services.interfaces.JwtService;
+import cat.itacademy.barcelonactiva.gimeno.carlos.s05.t02.n01.services.interfaces.PlayerService;
 import lombok.AllArgsConstructor;
 
 @Configuration
@@ -20,7 +20,7 @@ import lombok.AllArgsConstructor;
 public class SecurityConfig {
     private final AuthenticationProvider authenticationProvider;
     private final JwtService jwtService;
-    private final UserDetailsService userDetailsService;
+    private final PlayerService playerService;
 
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -44,6 +44,6 @@ public class SecurityConfig {
     }
 
     JWTAuthorizationFilter jwtAuthorizationFilter() {
-        return new JWTAuthorizationFilter(jwtService, userDetailsService);
+        return new JWTAuthorizationFilter(jwtService, playerService);
     }
 }

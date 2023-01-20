@@ -1,5 +1,6 @@
 package cat.itacademy.barcelonactiva.gimeno.carlos.s05.t02.n01.controller;
 
+import java.security.Principal;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
@@ -33,7 +34,7 @@ public class PlayerController {
     }
 
     @PostMapping(value = "/{id}/games")
-    public ResponseEntity<GamesDto> playDados(@PathVariable(name = "id") String idPlayer) {
+    public ResponseEntity<GamesDto> playDados(@PathVariable(name = "id") String idPlayer, Principal principal) {
         GamesDto game = this.gamesService.launchDices(idPlayer);
         return ResponseEntity.status(HttpStatus.OK).body(game);
     }
