@@ -4,4 +4,5 @@ public class Constants {
     public static String AUTHORIZATION = "Authorization";
     public static String BEARER = "Bearer ";
     public static String SECRET_JWT = "secret-cheems";
+    public static String ANONIMO = "ANONIMO";
 }

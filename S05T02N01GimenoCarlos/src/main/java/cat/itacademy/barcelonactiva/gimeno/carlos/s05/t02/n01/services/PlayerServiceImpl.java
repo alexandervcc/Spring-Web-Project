@@ -29,7 +29,7 @@ public class PlayerServiceImpl implements PlayerService {
                 .stream()
                 .map(j -> {
                     PlayerDto playerDto = this.playerMapper.convertToDto(j);
-                    playerDto.listGames = null;
+                    playerDto.percentage = this.gamesService.calculatePercentage(playerDto.id);
                     return playerDto;
                 })
                 .collect(Collectors.toList());

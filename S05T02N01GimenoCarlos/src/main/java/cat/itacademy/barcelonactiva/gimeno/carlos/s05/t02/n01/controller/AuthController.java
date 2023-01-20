@@ -1,6 +1,5 @@
 package cat.itacademy.barcelonactiva.gimeno.carlos.s05.t02.n01.controller;
 
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,13 +21,8 @@ public class AuthController {
     @PostMapping(path = "/login")
     public ResponseEntity<ResAuthDto> login(@Valid @RequestBody ReqAuthDto authDto) {
         String jwt = this.authServive.logIn(authDto);
-
-        HttpHeaders responseHeaders = new HttpHeaders();
-        responseHeaders.set("token", "jwt");
-
-        ResAuthDto resAuthDto = ResAuthDto.builder().message("Login Exitosos").build();
-
-        return ResponseEntity.ok().headers(responseHeaders).body(resAuthDto);
+        ResAuthDto resAuthDto = ResAuthDto.builder().message("Login Exitosos").token(jwt).build();
+        return ResponseEntity.ok().body(resAuthDto);
     }
 
     @PostMapping(path = "/sign-up")

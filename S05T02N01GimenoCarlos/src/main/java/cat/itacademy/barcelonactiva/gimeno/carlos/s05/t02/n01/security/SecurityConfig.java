@@ -24,21 +24,26 @@ public class SecurityConfig {
 
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        // Politica de seguridad
         http
                 .csrf().disable()
                 .httpBasic().disable()
-                .formLogin().disable()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .securityMatcher("/**")
+                .formLogin().disable();
+
+        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
+        http.securityMatcher("/**")
                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests
                         .requestMatchers("/auth/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/player", "/player/**").permitAll()
-                        .anyRequest().authenticated())
-                .authenticationProvider(authenticationProvider)
-                .addFilterBefore(new JWTAuthorizationFilter(jwtService, userDetailsService),
-                        UsernamePasswordAuthenticationFilter.class);
+                        .anyRequest().authenticated());
+
+        http.authenticationProvider(authenticationProvider)
+                .addFilterBefore(jwtAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
+
         return http.build();
+    }
+
+    JWTAuthorizationFilter jwtAuthorizationFilter() {
+        return new JWTAuthorizationFilter(jwtService, userDetailsService);
     }
 }
