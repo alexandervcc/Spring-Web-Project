@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import cat.itacademy.barcelonactiva.gimeno.carlos.s05.t02.n01.domain.dto.GamesDto;
 import cat.itacademy.barcelonactiva.gimeno.carlos.s05.t02.n01.domain.dto.PlayerDto;
+import cat.itacademy.barcelonactiva.gimeno.carlos.s05.t02.n01.exceptions.UnauthorizedException;
 import cat.itacademy.barcelonactiva.gimeno.carlos.s05.t02.n01.services.interfaces.GamesService;
 import cat.itacademy.barcelonactiva.gimeno.carlos.s05.t02.n01.services.interfaces.PlayerService;
 import lombok.AllArgsConstructor;
@@ -28,19 +29,22 @@ public class PlayerController {
     private final GamesService gamesService;
 
     @PutMapping(value = "")
-    public ResponseEntity<?> updatePlayer(@RequestBody(required = true)PlayerDto playerDto) {
+    public ResponseEntity<?> updatePlayer(@RequestBody(required = true) PlayerDto playerDto, Principal principal) {
+        this.validateOwnerAction(playerDto.id, principal.getName());
         PlayerDto playerDto2 = this.playerService.updatePlayer(playerDto);
         return ResponseEntity.status(HttpStatus.OK).body(playerDto2);
     }
 
     @PostMapping(value = "/{id}/games")
     public ResponseEntity<GamesDto> playDados(@PathVariable(name = "id") String idPlayer, Principal principal) {
+        this.validateOwnerAction(idPlayer, principal.getName());
         GamesDto game = this.gamesService.launchDices(idPlayer);
         return ResponseEntity.status(HttpStatus.OK).body(game);
     }
 
     @DeleteMapping(value = "/{id}/games")
-    public ResponseEntity<Void> deletePlayerData(@PathVariable(name = "id") String idPlayer) {
+    public ResponseEntity<Void> deletePlayerData(@PathVariable(name = "id") String idPlayer, Principal principal) {
+        this.validateOwnerAction(idPlayer, principal.getName());
         this.gamesService.deleteGamesFromPlayer(idPlayer);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
@@ -75,4 +79,9 @@ public class PlayerController {
         return ResponseEntity.status(HttpStatus.OK).body(playerDto);
     }
 
+    private void validateOwnerAction(String idAction, String idAuth) {
+        if (idAction.equals(idAuth)) {
+            throw new UnauthorizedException("Usted no tiene permisos para dicha accion.");
+        }
+    }
 }

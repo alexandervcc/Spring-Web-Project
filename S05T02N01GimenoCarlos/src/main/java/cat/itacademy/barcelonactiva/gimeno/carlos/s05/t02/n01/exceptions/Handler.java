@@ -37,4 +37,13 @@ public class Handler extends ResponseEntityExceptionHandler {
                 .build();
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
     }
+
+    @ExceptionHandler(value = { UnauthorizedException.class })
+    public ResponseEntity<?> handleUnauthorizedException(UnauthorizedException ex) {
+        ErrorDto error = ErrorDto.builder()
+                .code(HttpStatus.FORBIDDEN.value())
+                .error(ex.getMessage())
+                .build();
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(error);
+    }
 }
