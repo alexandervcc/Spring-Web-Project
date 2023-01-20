@@ -24,7 +24,7 @@ public class AuthController {
         String jwt = this.authServive.logIn(authDto);
 
         HttpHeaders responseHeaders = new HttpHeaders();
-        responseHeaders.set("token", jwt);
+        responseHeaders.set("token", "jwt");
 
         ResAuthDto resAuthDto = ResAuthDto.builder().message("Login Exitosos").build();
 

@@ -33,7 +33,7 @@ public class SecurityConfig {
                 .and()
                 .securityMatcher("/**")
                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests
-                        .requestMatchers("/auth/**").permitAll() 
+                        .requestMatchers("/auth/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/player", "/player/**").permitAll()
                         .anyRequest().authenticated())
                 .authenticationProvider(authenticationProvider)
