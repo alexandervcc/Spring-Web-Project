@@ -59,6 +59,7 @@ public class PlayerServiceImpl implements PlayerService {
         List<PlayerDto> list = this.getAllPlayers();
         list.forEach(j -> {
             j.percentage = this.gamesService.calculatePercentage(j.id);
+            j.listGames = null;
         });
 
         List<PlayerDto> list2 = list.stream()

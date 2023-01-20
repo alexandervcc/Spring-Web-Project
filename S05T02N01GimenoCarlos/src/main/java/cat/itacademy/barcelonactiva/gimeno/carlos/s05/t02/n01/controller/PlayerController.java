@@ -80,7 +80,7 @@ public class PlayerController {
     }
 
     private void validateOwnerAction(String idAction, String idAuth) {
-        if (idAction.equals(idAuth)) {
+        if (!idAction.equals(idAuth)) {
             throw new UnauthorizedException("Usted no tiene permisos para dicha accion.");
         }
     }
