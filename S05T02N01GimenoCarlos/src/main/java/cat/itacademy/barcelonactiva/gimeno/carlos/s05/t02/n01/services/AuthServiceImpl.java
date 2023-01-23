@@ -34,7 +34,7 @@ public class AuthServiceImpl implements AuthServive {
         List<Player> player = this.playerRepository.findByNombre(authDto.name);
         String token = this.jwtService.generateToken(player.get(0));
         return token;
-    }
+    } 
 
     @Override
     public void signUp(ReqAuthDto playerDto) {

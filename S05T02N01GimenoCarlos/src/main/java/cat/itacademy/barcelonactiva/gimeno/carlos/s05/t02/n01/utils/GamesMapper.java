@@ -12,13 +12,13 @@ import lombok.AllArgsConstructor;
 public class GamesMapper {
     private final ModelMapper mapper;
 
-    public GamesDto convertToDto(Games Games) {
-        GamesDto GamesDto = mapper.map(Games, GamesDto.class);
+    public GamesDto convertToDto(Games games) {
+        GamesDto GamesDto = mapper.map(games, GamesDto.class);
         return GamesDto;
       }
     
-      public Games convertToEntity(GamesDto GamesDto) {
-        Games Games = mapper.map(GamesDto, Games.class);
+      public Games convertToEntity(GamesDto gamesDto) {
+        Games Games = mapper.map(gamesDto, Games.class);
         return Games;
       }
 }

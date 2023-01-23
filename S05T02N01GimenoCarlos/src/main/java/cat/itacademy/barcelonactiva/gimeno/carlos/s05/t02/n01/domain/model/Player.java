@@ -30,7 +30,6 @@ public class Player implements UserDetails {
     private Date fechaRegistro;
 
     private String password;
-
     private Role role;
 
     @DBRef

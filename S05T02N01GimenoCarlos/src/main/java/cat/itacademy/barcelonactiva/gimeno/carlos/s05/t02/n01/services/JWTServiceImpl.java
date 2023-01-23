@@ -40,7 +40,6 @@ public class JWTServiceImpl implements JwtService {
                 .withIssuedAt(new Date(System.currentTimeMillis()))
                 .withExpiresAt(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24))
                 .sign(algorithm);
-
     }
 
 }

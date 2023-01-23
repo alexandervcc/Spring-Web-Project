@@ -28,8 +28,8 @@ public class PlayerServiceImpl implements PlayerService {
     public List<PlayerDto> getAllPlayers() {
         List<PlayerDto> players = this.playerRepository.findAll()
                 .stream()
-                .map(j -> {
-                    PlayerDto playerDto = this.playerMapper.convertToDto(j);
+                .map(dbPlayer -> {
+                    PlayerDto playerDto = this.playerMapper.convertToDto(dbPlayer);
                     playerDto.percentage = this.gamesService.calculatePercentage(playerDto.id);
                     return playerDto;
                 })
@@ -58,24 +58,25 @@ public class PlayerServiceImpl implements PlayerService {
     public List<PlayerDto> getPlayersRanking() {
         List<PlayerDto> list = this.getAllPlayers();
         list.forEach(j -> {
-            j.percentage = this.gamesService.calculatePercentage(j.id);
             j.listGames = null;
         });
 
-        List<PlayerDto> list2 = list.stream()
-                .filter(j -> j.percentage >= 0)
+        List<PlayerDto> sortedPlayerList = list
+                .stream()
+                .filter(playerDto -> playerDto.percentage >= 0)
                 .collect(Collectors.toList());
-        list2.sort((j1, j2) -> {
-            if (j1.percentage < j2.percentage) {
+
+        sortedPlayerList.sort((playerDto1, playerDto2) -> {
+            if (playerDto1.percentage < playerDto2.percentage) {
                 return 1;
             }
-            if (j1.percentage > j2.percentage) {
+            if (playerDto1.percentage > playerDto2.percentage) {
                 return -1;
             }
             return 0;
         });
 
-        return list2;
+        return sortedPlayerList;
     }
 
     @Override
@@ -86,15 +87,19 @@ public class PlayerServiceImpl implements PlayerService {
                 throw new InvalidDataException("El nombre: " + playerDto.nombre + " esta en uso.");
             }
         }
+
         Optional<Player> playerOp = this.playerRepository.findById(playerDto.id);
         if (playerOp.isEmpty()) {
             throw new NotFoundException("Jugador no encontrado para id: " + playerDto.id);
         }
+
         Player p = playerOp.get();
         p.setNombre(playerDto.nombre);
         p = this.playerRepository.save(p);
+
         PlayerDto playerDto2 = this.playerMapper.convertToDto(p);
         playerDto2.listGames = null;
+        
         return playerDto2;
     }
 
